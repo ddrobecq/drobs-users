@@ -13,7 +13,6 @@ npm install drobs-users
 
 # Components list
 UserList
-
 UserInfo
 UserForm
 UserPicture
