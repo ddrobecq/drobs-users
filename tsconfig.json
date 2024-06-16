@@ -4,10 +4,17 @@
     "target": "ES6",
     "outDir": "./dist", // Specify the output folder for compiled JavaScript
     "allowJs": true,
-    "moduleResolution": "node",
+    "moduleResolution": "NodeNext",
     "declaration": true,
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "noFallthroughCasesInSwitch": true,
+    "module": "NodeNext",
+    "resolveJsonModule": true,
+    "isolatedModules": true
   },
   "include": ["./**/*.ts", "./**/*.tsx"], // Specify the path to your TypeScript files
   "exclude": ["dist", "node_modules"] // Specify the path to your TypeScript files

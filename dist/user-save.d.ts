@@ -1,5 +1,6 @@
 import React from "react";
 type UserSaveProps = {
+    url: string;
     id: number;
     name: string;
     picture: string;

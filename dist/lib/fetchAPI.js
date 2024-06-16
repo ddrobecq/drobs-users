@@ -1,21 +1,22 @@
-'use client';
-import { useState, useEffect } from 'react';
-const _APIURL = "https://api.billard.drobecq.fr";
+"use client";
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const react_1 = require("react");
 // **********************************************
 // function : useFetch
-//  url : URL to call API
+//  path : path to add to the URL to call API (ex: /users)
 //  method : method to call API's resources (GET, POST, PUT, DELETE)
-//  bWithPagination (optional) : true if data should be fetched page by page
-// description : to use as a React hook 
+//  strPayLoad : JSON string to send to the API
+//  return : [Data, boolean]
+// description : to use as a React hook
 // **********************************************
-export default function useFetch(url, method, strPayLoad) {
-    const [data, setData] = useState([]);
-    const [isLoading, setIsLoading] = useState(true);
-    const bRetry = (method === 'GET') ? true : false;
-    useEffect(() => {
+function useFetch(url, method, strPayLoad) {
+    const [data, setData] = (0, react_1.useState)([]);
+    const [isLoading, setIsLoading] = (0, react_1.useState)(true);
+    const bRetry = method === "GET" ? true : false;
+    (0, react_1.useEffect)(() => {
         if (url) {
-            callAPIPerfPool(url, method, strPayLoad, bRetry)
-                .then((results) => {
+            callAPI(url, method, strPayLoad, bRetry).then((results) => {
                 setData(results);
                 setIsLoading(false);
             }, () => {
@@ -26,15 +27,12 @@ export default function useFetch(url, method, strPayLoad) {
     }, [url, method, strPayLoad, bRetry]);
     return [data, isLoading];
 }
-function callAPIPerfPool(strPath, strMethod, strPayLoad, bRetry) {
-    const url = _APIURL + strPath;
-    return (callAPI(url, strMethod, strPayLoad, bRetry));
-}
+exports.default = useFetch;
 /* RETURN AJAX API CALL */
-function callAPI(strPath, strMethod, strPayLoad, bRetry) {
+function callAPI(path, method, payLoad, retry) {
     return new Promise((resolve, reject) => {
         let xhr = new XMLHttpRequest();
-        xhr.open(strMethod, strPath);
+        xhr.open(method, path);
         xhr.setRequestHeader("Content-Type", "application/json; charset=utf-8");
         xhr.responseType = "json";
         xhr.onload = function () {
@@ -42,7 +40,7 @@ function callAPI(strPath, strMethod, strPayLoad, bRetry) {
                 resolve(this.response);
             }
             else {
-                console.error('received : ', `ERROR ${this.status}`, JSON.stringify(this.response));
+                console.error("received : ", `ERROR ${this.status}`, JSON.stringify(this.response));
                 reject({
                     status: this.status,
                     error: JSON.stringify(this.response),
@@ -50,26 +48,25 @@ function callAPI(strPath, strMethod, strPayLoad, bRetry) {
             }
         };
         xhr.onerror = function (error) {
-            console.error(`received : ERROR ${this.status} on request ${strMethod} ${strPath}`, error);
-            if (bRetry) {
-                console.error('retry:', `${strMethod} ${strPath}`);
-                return (callAPI(strPath, strMethod, strPayLoad, false));
+            console.error(`received : ERROR ${this.status} on request ${method} ${path}`, error);
+            if (retry) {
+                console.error("retry:", `${method} ${path}`);
+                return callAPI(path, method, payLoad, false);
             }
             else
                 reject({
                     status: this.status,
-                    error: error.type
+                    error: error.type,
                 });
         };
         xhr.ontimeout = function (error) {
-            console.error(`received : TIMEOUT ${this.status} on request ${strMethod} ${strPath}`, error);
+            console.error(`received : TIMEOUT ${this.status} on request ${method} ${path}`, error);
             reject({
                 status: 408,
-                error: error.type
+                error: error.type,
             });
         };
-        xhr.send(strPayLoad);
-        console.debug("sent : ", `${strMethod} ${strPath} ${strPayLoad}`);
+        xhr.send(payLoad);
+        console.debug("sent : ", `${method} ${path} ${payLoad}`);
     });
 }
-;

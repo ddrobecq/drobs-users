@@ -1,5 +1,6 @@
 import React from "react";
 type UserFormProps = {
+    url: string;
     id: number;
     name: string;
     title: string;
