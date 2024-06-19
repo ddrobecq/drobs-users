@@ -13,9 +13,7 @@ Install the package
 ```bash
 npm install drobs-users
 ```
-
 Then simply pass your API url in prop 'url' as in the following example
-
 ```javascript
 <Users url={YOUR_API_URL} />
 ```
